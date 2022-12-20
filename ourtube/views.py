@@ -1,6 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    context = {'scratch': "sratch"}
-    return render(request, 'ourtube/index.html', context)
+    return HttpResponse("Hello, world.")
