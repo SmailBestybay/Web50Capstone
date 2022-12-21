@@ -8,6 +8,7 @@ class MembershipInline(admin.TabularInline):
     extra = 1
 
 class MemberUserAdmin(UserAdmin):
+    '''extend UserAdmin to add membership inline to admin page'''
     inlines = (MembershipInline,)
 
 class FeedAdmin(admin.ModelAdmin):

@@ -9,8 +9,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-class YoutubeChannel(models.Model):
-    pass
+class YoutubeChannel(models.Model): 
+    name = models.CharField(max_length=128)
+    cahnnel_id = models.CharField(max_length=128)
 
 class Feed(models.Model):
     name = models.CharField(max_length=128)
