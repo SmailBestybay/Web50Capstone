@@ -13,6 +13,7 @@ class YoutubeChannel(models.Model):
     pass
 
 class Feed(models.Model):
+    name = models.CharField(max_length=128)
     members = models.ManyToManyField(User, through="Membership")
     channels = models.ManyToManyField(YoutubeChannel)
 
