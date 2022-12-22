@@ -22,4 +22,4 @@ class FeedAdmin(admin.ModelAdmin):
 admin.site.register(User, MemberUserAdmin)
 admin.site.register(YoutubeChannel)
 admin.site.register(Feed, FeedAdmin)
-admin.site.register(Membership)
+# admin.site.register(Membership)

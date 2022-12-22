@@ -12,11 +12,18 @@ class User(AbstractUser):
 class YoutubeChannel(models.Model): 
     name = models.CharField(max_length=128)
     cahnnel_id = models.CharField(max_length=128)
+    playlist_id = models.CharField(max_length=128)
+
+    def __str__(self) -> str:
+        return self.name
 
 class Feed(models.Model):
     name = models.CharField(max_length=128)
     members = models.ManyToManyField(User, through="Membership")
-    channels = models.ManyToManyField(YoutubeChannel)
+    channels = models.ManyToManyField(YoutubeChannel, blank=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
