@@ -22,4 +22,5 @@ class FeedAdmin(admin.ModelAdmin):
 admin.site.register(User, MemberUserAdmin)
 admin.site.register(YoutubeChannel)
 admin.site.register(Feed, FeedAdmin)
+# don't need to register membership model with admin because inlines serve that need.
 # admin.site.register(Membership)
