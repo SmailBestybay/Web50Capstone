@@ -11,7 +11,7 @@ class User(AbstractUser):
 
 class YoutubeChannel(models.Model): 
     name = models.CharField(max_length=128)
-    cahnnel_id = models.CharField(max_length=128)
+    channel_id = models.CharField(max_length=128)
     playlist_id = models.CharField(max_length=128)
 
     def __str__(self) -> str:
