@@ -1,0 +1,35 @@
+{% extends 'ourtube/base.html' %}
+
+{% block title %} {{ current_feed.name }} {% endblock title %}
+
+{% block sidebar %}
+    {{ block.super }} 
+    <div id="feeds">
+        <ul>
+            {% for feed in feeds  %}
+                <li>
+                    <a href="{{ feed.id }}">{{ feed.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock sidebar %}
+
+{% block content %}
+    <div class='feed'>
+        <h1>{{ current_feed.name }}</h1>
+        {% for channel in channels %}
+        <div class="channel">
+            <p>Channel name: {{ channel.name }}</p>
+            <div class="videos">
+                {% for video in channel.videos %}
+                    <div>
+                        {% comment %} need to use embed for iframe {% endcomment %}
+                        <iframe src="https://www.youtube.com/embed/{{video}}" frameborder="0"></iframe>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

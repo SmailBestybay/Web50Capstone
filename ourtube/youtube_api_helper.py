@@ -20,13 +20,18 @@ def search(query):
     return response['items']
 
 def get_videos(channel):
-    '''Get last 3 videos from playlist'''
+    '''
+    Get last 3 videos from playlist
+    Returns an array of youtube video ids
+    '''
     
     response = _youtube.playlistItems().list(
         part='snippet',
         playlistId=channel.playlist_id,
         maxResults=3,
     ).execute()
-
-    return response['items']
+    video_ids = []
+    for item in response['items']:
+        video_ids.append(item['snippet']['resourceId']['videoId'])
+    return video_ids
 
