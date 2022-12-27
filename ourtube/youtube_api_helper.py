@@ -8,7 +8,7 @@ _youtube = build(
     developerKey=settings.GOOGLE_API_KEY
     )
 
-def search(query):
+def yt_search(query):
     '''Search for a youtube channel'''
 
     response = _youtube.search().list(
@@ -16,6 +16,7 @@ def search(query):
         q=query,
         type='channel'
     ).execute()
+
 
     return response['items']
 

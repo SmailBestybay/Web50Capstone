@@ -1,0 +1,44 @@
+{% extends 'ourtube/base.html' %}
+
+{% block title %} Search {% endblock title %}
+
+{% block sidebar %}
+    {{ block.super }} 
+    <div id="feeds">
+        <ul>
+            {% for feed in feeds  %}
+                <li>
+                    <a href="{{ feed.id }}">{{ feed.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock sidebar %}
+
+{% block content %}
+    <div class="search-form">
+        <form action="{% url "search" %}" method="post">
+            {% csrf_token %}
+            <label for="search_channel">Search for channel </label>
+            <input id="search_channel" type="text" name="search_channel" value="">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+
+    <div class="results">
+        {% for result in results %}
+            <div class="result" id="{{ result.snippet.channelId }}">
+                <div class="channel_title">
+                    <img src="{{ result.snippet.thumbnails.default.url }}" alt="" srcset="">
+                    <a href="https://www.youtube.com/channel/{{ result.snippet.channelId }}">{{ result.snippet.title }}</a>
+                </div>
+                <div class="channel_description">{{ result.snippet.description }}</div>
+                {% comment %} Add channel button, and use channel id to get playlist id on saving. button is post method. {% endcomment %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="message">
+        {{ message }}
+    </div>
+{% endblock content %}
