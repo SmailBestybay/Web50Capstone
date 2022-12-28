@@ -2,20 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .youtube_api_helper import get_videos, yt_search
 from .models import YoutubeChannel as ytc, Feed, User
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+@login_required
 def index(request):
     
     context = {}
-    feeds = Feed.objects.all()
-    context["feeds"] = feeds
+    context["feeds"] = get_feeds()
     
     return render(request, 'ourtube/index.html', context)
 
+@login_required
 def feed(request, feed_id):
     context = {}
-    feeds = Feed.objects.all()
-    context['feeds'] = feeds
+    context['feeds'] = get_feeds()
 
     current_feed = Feed.objects.get(id=feed_id)
     context['current_feed'] = current_feed
@@ -28,11 +28,11 @@ def feed(request, feed_id):
 
     return render(request, 'ourtube/feed.html', context)
 
+@login_required
 def search_view(request):
     
     context = {}
-    feeds = Feed.objects.all()
-    context["feeds"] = feeds
+    context["feeds"] = get_feeds()
 
     if request.method == 'POST':
         if request.POST['search_channel'].strip() == '':
@@ -44,5 +44,5 @@ def search_view(request):
     return render(request, 'ourtube/search.html', context)
 
 
-
-
+def get_feeds():
+    return  Feed.objects.all()

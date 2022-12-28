@@ -2,19 +2,6 @@
 
 {% block title %} Search {% endblock title %}
 
-{% block sidebar %}
-    {{ block.super }} 
-    <div id="feeds">
-        <ul>
-            {% for feed in feeds  %}
-                <li>
-                    <a href="{{ feed.id }}">{{ feed.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endblock sidebar %}
-
 {% block content %}
     <div class="search-form">
         <form action="{% url "search" %}" method="post">

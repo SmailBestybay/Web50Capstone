@@ -141,3 +141,7 @@ API_VERSION = "v3"
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda r: True,  # false disables the debug toolabar
 }
+
+# Auth views overrides
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = '/accounts/login/'

@@ -10,10 +10,22 @@
         {% block sidebar %}
         <div id='nav'>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="search">Search</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="{% url "index" %}">Home</a></li>
+                <li><a href="{% url "search" %}">Search</a></li>
+                <li><a href="{% url "logout" %}">Logout</a></li>
             </ul>
+        </div>
+        <div id="feeds">
+            <ul>
+                {% for feed in feeds  %}
+                    <li>
+                        <a href="{% url "feed" feed.id %}">{{ feed.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="add_feed" class="overlay">
+
         </div>
         {% endblock sidebar %}
     </div>
