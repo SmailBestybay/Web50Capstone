@@ -16,6 +16,7 @@
             </ul>
         </div>
         <div id="feeds">
+            <h3>Feeds</h3>
             <ul>
                 {% for feed in feeds  %}
                     <li>
@@ -25,8 +26,23 @@
             </ul>
         </div>
         <div id="add_feed" class="overlay">
-
+            <a href="#">Create Feed</a>
+            <a href="#">Join Feed</a>
         </div>
+        <div class="overlay">
+            <form action="{% url 'join_or_create_feed' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="hidden" name="create_feed" value='create_feed'>
+                <input type="submit" value="Create">
+            </form>
+        </div>
+        <div class="overlay">
+            <form action="" method="post">
+                {% csrf_token %}
+                
+            </form>
+        </div> 
         {% endblock sidebar %}
     </div>
     <div class="content">
