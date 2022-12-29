@@ -1,7 +1,10 @@
 from .models import Feed
-from django.forms import ModelForm
+from django import forms
 
-class CreateFeedForm(ModelForm):
+class CreateFeedForm(forms.ModelForm):
     class Meta:
         model = Feed
         fields = ['name']
+
+class JoinFeedForm(forms.Form):
+    feed_number = forms.IntegerField()

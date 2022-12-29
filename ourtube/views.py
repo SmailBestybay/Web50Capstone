@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .youtube_api_helper import get_videos, yt_search
 from .models import YoutubeChannel as ytc, Feed, User, Membership
 from django.contrib.auth.decorators import login_required
-from .forms import CreateFeedForm
+from .forms import CreateFeedForm, JoinFeedForm
 from datetime import datetime
 
 @login_required
@@ -11,7 +11,8 @@ def index(request):
     
     context = {}
     context["feeds"] = get_feeds()
-    context['form'] = CreateFeedForm()
+    context['create_form'] = CreateFeedForm()
+    context['join_form'] = JoinFeedForm()
     
     return render(request, 'ourtube/index.html', context)
 
@@ -19,7 +20,8 @@ def index(request):
 def feed(request, feed_id):
     context = {}
     context['feeds'] = get_feeds()
-    context['form'] = CreateFeedForm()
+    context['create_form'] = CreateFeedForm()
+    context['join_form'] = JoinFeedForm()
 
     current_feed = Feed.objects.get(id=feed_id)
     context['current_feed'] = current_feed
@@ -37,7 +39,8 @@ def search_view(request):
     
     context = {}
     context["feeds"] = get_feeds()
-    context['form'] = CreateFeedForm()
+    context['create_form'] = CreateFeedForm()
+    context['join_form'] = JoinFeedForm()
 
     if request.method == 'POST':
         if request.POST['search_channel'].strip() == '':
@@ -52,7 +55,7 @@ def search_view(request):
 def join_or_create_feed(request):
     if request.method != 'POST':
         return redirect('index')
-    elif request.POST['create_feed']:
+    elif 'create_feed' in request.POST.keys():
         form = CreateFeedForm(request.POST)
         if form.is_valid():
             current_user = User.objects.get(pk=request.user.id)
@@ -64,8 +67,18 @@ def join_or_create_feed(request):
                 is_owner=True
                 )
             return redirect('feed', feed_id=new_feed.id)
-    # elif request.POST['join_feed']:
-    #     return redirect('feed', feed_id=0)
+    elif 'join_feed' in request.POST.keys():
+        form = JoinFeedForm(request.POST)
+        if form.is_valid():
+            current_user = User.objects.get(pk=request.user.id)
+            feed_to_join = Feed.objects.get(pk=form.cleaned_data['feed_number'])
+            Membership.objects.create(
+                user=current_user,
+                feed=feed_to_join,
+                date_joined = datetime.now(),
+                is_owner=False
+            )
+        return redirect('feed', feed_id=feed_to_join.id)
     return redirect('index')
         
 
