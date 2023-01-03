@@ -1,56 +1,58 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .youtube_api_helper import get_videos, yt_search
-from .models import YoutubeChannel as ytc, Feed, User, Membership
+from .models import YoutubeChannel as Ytc, Feed, User, Membership
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .forms import CreateFeedForm, JoinFeedForm
 from datetime import datetime
+from django.views.generic import TemplateView
 
-@login_required
-def index(request):
-    
-    context = {}
-    context["feeds"] = get_feeds()
-    context['create_form'] = CreateFeedForm()
-    context['join_form'] = JoinFeedForm()
-    
-    return render(request, 'ourtube/index.html', context)
+class OurtubeTemplateView(TemplateView):
 
-@login_required
-def feed(request, feed_id):
-    context = {}
-    context['feeds'] = get_feeds()
-    context['create_form'] = CreateFeedForm()
-    context['join_form'] = JoinFeedForm()
+    template_name = 'ourtube/index.html'
 
-    current_feed = Feed.objects.get(id=feed_id)
-    context['current_feed'] = current_feed
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["feeds"] = get_feeds()
+        context['create_form'] = CreateFeedForm()
+        context['join_form'] = JoinFeedForm()
+        return context
 
-    channels = ytc.objects.filter(feed__id=feed_id)
-    for channel in channels:
-        # set attributes dirrectly on objects
-        channel.videos = get_videos(channel)
-    context['channels'] = channels
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
-    return render(request, 'ourtube/feed.html', context)
+class FeedView(OurtubeTemplateView):
 
-@login_required
-def search_view(request):
-    
-    context = {}
-    context["feeds"] = get_feeds()
-    context['create_form'] = CreateFeedForm()
-    context['join_form'] = JoinFeedForm()
+    template_name = 'ourtube/feed.html'
 
-    if request.method == 'GET':
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_feed = Feed.objects.get(id=self.kwargs['feed_id'])
+        context['current_feed'] = current_feed
+
+        channels = Ytc.objects.filter(feed__id=self.kwargs['feed_id'])
+        for channel in channels:
+            # set attributes dirrectly on objects
+            channel.videos = get_videos(channel)
+        context['channels'] = channels
+        return context
+
+class SearchView(OurtubeTemplateView):
+
+    template_name = 'ourtube/search.html'
+
+    def get(self, request, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
         if 'search_channel' in request.GET.keys():
             if request.GET['search_channel'].strip() == '':
-                context['message'] = 'Field must not be empty'
+                context['message'] = 'Search field must not be empty'
                 return render(request, 'ourtube/search.html', context, status=400)
             results = yt_search(request.GET['search_channel'])
             context['results'] = results
-
-    return render(request, 'ourtube/search.html', context)
+        return render(request, self.template_name, context)
+            
 
 @login_required
 def join_or_create_feed(request):
