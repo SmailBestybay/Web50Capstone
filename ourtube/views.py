@@ -14,7 +14,7 @@ class OurtubeTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["feeds"] = get_feeds()
+        context["feeds"] = get_feeds(self.request.user)
         context['create_form'] = CreateFeedForm()
         context['join_form'] = JoinFeedForm()
         return context
@@ -85,5 +85,6 @@ def join_or_create_feed(request):
     return redirect('index')
         
 
-def get_feeds():
-    return  Feed.objects.all()
+def get_feeds(current_user):
+    """ Get the feeds that current user owns or follows """
+    return  Feed.objects.all().filter(members__id=current_user.id)
