@@ -4,8 +4,7 @@
 
 {% block content %}
     <div class="search-form">
-        <form action="{% url "search" %}" method="post">
-            {% csrf_token %}
+        <form action="{% url "search" %}" method="get">
             <label for="search_channel">Search for channel </label>
             <input id="search_channel" type="text" name="search_channel" value="">
             <input type="submit" value="Search">

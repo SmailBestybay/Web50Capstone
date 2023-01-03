@@ -42,12 +42,13 @@ def search_view(request):
     context['create_form'] = CreateFeedForm()
     context['join_form'] = JoinFeedForm()
 
-    if request.method == 'POST':
-        if request.POST['search_channel'].strip() == '':
-            context['message'] = 'Post must not be empty'
-            return render(request, 'ourtube/search.html', context, status=400)
-        results = yt_search(request.POST['search_channel'])
-        context['results'] = results
+    if request.method == 'GET':
+        if 'search_channel' in request.GET.keys():
+            if request.GET['search_channel'].strip() == '':
+                context['message'] = 'Field must not be empty'
+                return render(request, 'ourtube/search.html', context, status=400)
+            results = yt_search(request.GET['search_channel'])
+            context['results'] = results
 
     return render(request, 'ourtube/search.html', context)
 
