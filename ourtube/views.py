@@ -1,3 +1,4 @@
+from sqlite3 import IntegrityError
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .youtube_api_helper import get_videos, yt_search
@@ -75,12 +76,15 @@ def join_or_create_feed(request):
         if form.is_valid():
             current_user = User.objects.get(pk=request.user.id)
             feed_to_join = Feed.objects.get(pk=form.cleaned_data['feed_number'])
-            Membership.objects.create(
-                user=current_user,
-                feed=feed_to_join,
-                date_joined = datetime.now(),
-                is_owner=False
-            )
+            try:
+                Membership.objects.create(
+                    user=current_user,
+                    feed=feed_to_join,
+                    date_joined = datetime.now(),
+                    is_owner=False
+                )
+            except:
+                return redirect('feed', feed_id=feed_to_join.id)
         return redirect('feed', feed_id=feed_to_join.id)
     return redirect('index')
         
