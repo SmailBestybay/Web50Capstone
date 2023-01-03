@@ -1,4 +1,3 @@
-from sqlite3 import IntegrityError
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .youtube_api_helper import get_videos, yt_search
@@ -8,6 +7,7 @@ from django.utils.decorators import method_decorator
 from .forms import CreateFeedForm, JoinFeedForm
 from datetime import datetime
 from django.views.generic import TemplateView
+from django.contrib import messages
 
 class OurtubeTemplateView(TemplateView):
 
@@ -48,7 +48,7 @@ class SearchView(OurtubeTemplateView):
         context = super().get_context_data(**kwargs)
         if 'search_channel' in request.GET.keys():
             if request.GET['search_channel'].strip() == '':
-                context['message'] = 'Search field must not be empty'
+                messages.error(request, 'Search field must not be empty')
                 return render(request, 'ourtube/search.html', context, status=400)
             results = yt_search(request.GET['search_channel'])
             context['results'] = results
@@ -71,6 +71,9 @@ def join_or_create_feed(request):
                 is_owner=True
                 )
             return redirect('feed', feed_id=new_feed.id)
+        else:
+            messages.error(request, 'Feed already exists')
+            return redirect('index')
     elif 'join_feed' in request.POST.keys():
         form = JoinFeedForm(request.POST)
         if form.is_valid():
@@ -84,6 +87,7 @@ def join_or_create_feed(request):
                     is_owner=False
                 )
             except:
+                messages.error(request, 'Already a member')
                 return redirect('feed', feed_id=feed_to_join.id)
         return redirect('feed', feed_id=feed_to_join.id)
     return redirect('index')

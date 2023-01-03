@@ -3,6 +3,7 @@
 {% block title %} {{ current_feed.name }} {% endblock title %}
 
 {% block content %}
+    {{ block.super }}
     <div class='feed'>
         <h1>{{ current_feed.name }}</h1>
         {% for channel in channels %}

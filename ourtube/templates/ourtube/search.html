@@ -3,6 +3,7 @@
 {% block title %} Search {% endblock title %}
 
 {% block content %}
+    {{ block.super }}
     <div class="search-form">
         <form action="{% url "search" %}" method="get">
             <label for="search_channel">Search for channel </label>
@@ -22,9 +23,5 @@
                 {% comment %} Add channel button, and use channel id to get playlist id on saving. button is post method. {% endcomment %}
             </div>
         {% endfor %}
-    </div>
-
-    <div class="message">
-        {{ message }}
     </div>
 {% endblock content %}
