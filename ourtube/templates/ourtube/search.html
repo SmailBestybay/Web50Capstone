@@ -20,7 +20,17 @@
                     <a href="https://www.youtube.com/channel/{{ result.snippet.channelId }}">{{ result.snippet.title }}</a>
                 </div>
                 <div class="channel_description">{{ result.snippet.description }}</div>
-                {% comment %} Add channel button, and use channel id to get playlist id on saving. button is post method. {% endcomment %}
+                {% comment %} Add channel button, 
+                and use channel id to get playlist id on saving. button is post method. {% endcomment %}
+                <div class="multi_select_dropdown">
+                    <select multiple>
+                        {% for feed in feeds %}
+                            {% if feed.owner == user %}
+                                <option value="{{ feed.id }}"> {{ feed.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
         {% endfor %}
     </div>

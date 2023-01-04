@@ -100,5 +100,10 @@ class SignUpView(CreateView):
 
 
 def get_feeds(current_user):
-    """ Get the feeds that current user owns or follows """
-    return  Feed.objects.all().filter(members__id=current_user.id)
+    """Get the feeds that current user owns or follows 
+    Additionally, set user object on owner attribute for each feed
+    """
+    feeds = Feed.objects.all().filter(members__id=current_user.id)
+    for feed in feeds:
+        feed.owner = feed.membership_set.filter(is_owner=True)[0].user
+    return feeds
