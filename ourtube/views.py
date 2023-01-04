@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .youtube_api_helper import get_videos, yt_search
-from .models import YoutubeChannel as Ytc, Feed, User, Membership
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from .forms import CreateFeedForm, JoinFeedForm
-from datetime import datetime
-from django.views.generic import TemplateView
 from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, CreateView
+from datetime import datetime
+from .models import YoutubeChannel as Ytc, Feed, User, Membership
+from .forms import CreateFeedForm, JoinFeedForm, CustomUserCreationFrom
+from .youtube_api_helper import get_videos, yt_search
 
 class OurtubeTemplateView(TemplateView):
 
@@ -92,6 +92,12 @@ def join_or_create_feed(request):
         return redirect('feed', feed_id=feed_to_join.id)
     return redirect('index')
         
+
+class SignUpView(CreateView):
+    form_class = CustomUserCreationFrom
+    success_url = reverse_lazy('login')
+    template_name = "registration/signup.html"
+
 
 def get_feeds(current_user):
     """ Get the feeds that current user owns or follows """
