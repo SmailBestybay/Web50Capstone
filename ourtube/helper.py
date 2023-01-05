@@ -1,6 +1,6 @@
-from urllib.error import HTTPError
 from googleapiclient.discovery import build
 from django.conf import settings
+from .models import Feed
 
 _youtube = build(
     settings.API_SERVICE_NAME,
@@ -21,8 +21,7 @@ def yt_search(query):
     return response['items']
 
 def get_videos(channel):
-    '''
-    Get last 3 videos from playlist
+    '''Get last 3 videos from playlist.
     Returns an array of youtube video ids
     '''
     
@@ -36,3 +35,11 @@ def get_videos(channel):
         video_ids.append(item['snippet']['resourceId']['videoId'])
     return video_ids
 
+def get_feeds(current_user):
+    """Get the feeds that current user owns or follows. 
+    Additionally, set user object on owner attribute for each feed
+    """
+    feeds = Feed.objects.all().filter(members__id=current_user.id)
+    for feed in feeds:
+        feed.owner = feed.membership_set.filter(is_owner=True).first().user
+    return feeds

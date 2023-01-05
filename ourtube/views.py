@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, CreateView
 from datetime import datetime
 from .models import YoutubeChannel as Ytc, Feed, User, Membership
 from .forms import CreateFeedForm, JoinFeedForm, CustomUserCreationFrom, SearchForm
-from .youtube_api_helper import get_videos, yt_search
+from .helper import get_videos, yt_search, get_feeds
 
 class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
 
@@ -56,7 +56,6 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
             else:
                 context['join_form'] = form
                 return self.render_to_response(context)
-            return redirect('feed', feed_id=feed_to_join.id)
 
         return self.render_to_response(context)
 
@@ -98,13 +97,3 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationFrom
     success_url = reverse_lazy('login')
     template_name = "registration/signup.html"
-
-
-def get_feeds(current_user):
-    """Get the feeds that current user owns or follows 
-    Additionally, set user object on owner attribute for each feed
-    """
-    feeds = Feed.objects.all().filter(members__id=current_user.id)
-    for feed in feeds:
-        feed.owner = feed.membership_set.filter(is_owner=True).first().user
-    return feeds
