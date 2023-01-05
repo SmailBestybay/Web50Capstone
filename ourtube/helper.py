@@ -6,7 +6,7 @@ _youtube = build(
     settings.API_SERVICE_NAME,
     settings.API_VERSION,
     developerKey=settings.GOOGLE_API_KEY
-    )
+)
 
 def yt_search(query):
     '''Search for a youtube channel'''

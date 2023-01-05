@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from datetime import datetime
 from .models import YoutubeChannel as Ytc, Feed, User, Membership
-from .forms import CreateFeedForm, JoinFeedForm, CustomUserCreationFrom, SearchForm
+from .forms import *
 from .helper import get_videos, yt_search, get_feeds
 
 class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
@@ -32,7 +32,7 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
                     feed=new_feed,
                     date_joined = datetime.now(),
                     is_owner=True
-                    )
+                )
                 return redirect('feed', feed_id=new_feed.id)
             else:
                 context['create_form'] = form
@@ -88,9 +88,15 @@ class SearchView(OurtubeTemplateView):
             if form.is_valid():
                 results = yt_search(form.cleaned_data['channel_name'])
                 context['results'] = results
+
+                current_user = User.objects.get(pk=request.user.id)
+                feeds_form = FeedMultipleChoiceForm(user=current_user)
+
+                context['feeds_form'] = feeds_form
             else:
                 context['form'] = form
                 return render(request, 'ourtube/search.html', context, status=400)
+
         return render(request, self.template_name, context)
 
 class SignUpView(CreateView):

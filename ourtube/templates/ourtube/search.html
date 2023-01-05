@@ -27,13 +27,16 @@
                 and use channel id to get playlist id on saving. button is post method. 
                 {% endcomment %}
                 <div class="multi_select_dropdown">
-                    <select multiple>
+                    <form action="#" method="post">
+                        {{ feeds_form }}
+                    </form>
+                    {% comment %} <select multiple>
                         {% for feed in feeds %}
                             {% if feed.owner == user %}
                                 <option value="{{ feed.id }}"> {{ feed.name }}</option>
                             {% endif %}
                         {% endfor %}
-                    </select>
+                    </select> {% endcomment %}
                 </div>
             </div>
         {% endfor %}
