@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from datetime import datetime
@@ -9,7 +9,7 @@ from .models import YoutubeChannel as Ytc, Feed, User, Membership
 from .forms import CreateFeedForm, JoinFeedForm, CustomUserCreationFrom
 from .youtube_api_helper import get_videos, yt_search
 
-class OurtubeTemplateView(TemplateView):
+class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
 
     template_name = 'ourtube/index.html'
 
@@ -19,10 +19,6 @@ class OurtubeTemplateView(TemplateView):
         context['create_form'] = CreateFeedForm()
         context['join_form'] = JoinFeedForm()
         return context
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
 class FeedView(OurtubeTemplateView):
 
@@ -105,5 +101,5 @@ def get_feeds(current_user):
     """
     feeds = Feed.objects.all().filter(members__id=current_user.id)
     for feed in feeds:
-        feed.owner = feed.membership_set.filter(is_owner=True)[0].user
+        feed.owner = feed.membership_set.filter(is_owner=True).first().user
     return feeds
