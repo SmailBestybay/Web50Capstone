@@ -5,9 +5,9 @@
 {% block content %}
     {{ block.super }}
     <div class="search-form">
+        {% comment %} Change this form into a dajngo form {% endcomment %}
         <form action="{% url "search" %}" method="get">
-            <label for="search_channel">Search for channel </label>
-            <input id="search_channel" type="text" name="search_channel" value="">
+            {{ form }}
             <input type="submit" value="Search">
         </form>
     </div>
@@ -16,12 +16,16 @@
         {% for result in results %}
             <div class="result" id="{{ result.snippet.channelId }}">
                 <div class="channel_title">
-                    <img src="{{ result.snippet.thumbnails.default.url }}" alt="" srcset="">
-                    <a href="https://www.youtube.com/channel/{{ result.snippet.channelId }}">{{ result.snippet.title }}</a>
+                    <img src="{{ result.snippet.thumbnails.default.url }}">
+                    <a href="https://www.youtube.com/channel/{{ result.snippet.channelId }}">
+                        {{ result.snippet.title }}
+                    </a>
                 </div>
                 <div class="channel_description">{{ result.snippet.description }}</div>
-                {% comment %} Add channel button, 
-                and use channel id to get playlist id on saving. button is post method. {% endcomment %}
+                {% comment %} 
+                Add channel button, 
+                and use channel id to get playlist id on saving. button is post method. 
+                {% endcomment %}
                 <div class="multi_select_dropdown">
                     <select multiple>
                         {% for feed in feeds %}

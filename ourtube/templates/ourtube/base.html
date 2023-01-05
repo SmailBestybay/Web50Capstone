@@ -30,7 +30,7 @@
             <a href="#">Join Feed</a>
         </div>
         <div class="overlay">
-            <form action="{% url 'join_or_create_feed' %}" method="post">
+            <form action="{% url 'index' %}" method="post">
                 {% csrf_token %}
                 {{ create_form }}
                 <input type="hidden" name="create_feed" value='create_feed'>
@@ -38,7 +38,7 @@
             </form>
         </div>
         <div class="overlay">
-            <form action="{% url 'join_or_create_feed' %}" method="post">
+            <form action="{% url 'index' %}" method="post">
                 {% csrf_token %}
                 {{ join_form }}
                 <input type="hidden" name="join_feed" value='join_feed'>

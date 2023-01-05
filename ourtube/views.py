@@ -1,12 +1,11 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from datetime import datetime
 from .models import YoutubeChannel as Ytc, Feed, User, Membership
-from .forms import CreateFeedForm, JoinFeedForm, CustomUserCreationFrom
+from .forms import CreateFeedForm, JoinFeedForm, CustomUserCreationFrom, SearchForm
 from .youtube_api_helper import get_videos, yt_search
 
 class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
@@ -19,6 +18,47 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
         context['create_form'] = CreateFeedForm()
         context['join_form'] = JoinFeedForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        if 'create_feed' in request.POST.keys():
+            form = CreateFeedForm(request.POST)
+            if form.is_valid():
+                current_user = User.objects.get(pk=request.user.id)
+                new_feed = Feed.objects.create(name=form.cleaned_data['name'])
+                Membership.objects.create(
+                    user=current_user,
+                    feed=new_feed,
+                    date_joined = datetime.now(),
+                    is_owner=True
+                    )
+                return redirect('feed', feed_id=new_feed.id)
+            else:
+                context['create_form'] = form
+                return self.render_to_response(context)
+
+        if 'join_feed' in request.POST.keys():
+            form = JoinFeedForm(request.POST)
+            if form.is_valid():
+                current_user = User.objects.get(pk=request.user.id)
+                feed_to_join = get_object_or_404(Feed, pk=form.cleaned_data['feed_number'])
+                try:
+                    Membership.objects.create(
+                        user=current_user,
+                        feed=feed_to_join,
+                        date_joined = datetime.now(),
+                        is_owner=False
+                    )
+                except:
+                    messages.error(request, 'Already a member')
+                    return redirect('feed', feed_id=feed_to_join.id)
+            else:
+                context['join_form'] = form
+                return self.render_to_response(context)
+            return redirect('feed', feed_id=feed_to_join.id)
+
+        return self.render_to_response(context)
 
 class FeedView(OurtubeTemplateView):
 
@@ -42,52 +82,17 @@ class SearchView(OurtubeTemplateView):
 
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        if 'search_channel' in request.GET.keys():
-            if request.GET['search_channel'].strip() == '':
-                messages.error(request, 'Search field must not be empty')
+        form = SearchForm()
+        context['form'] = form
+        if 'channel_name' in request.GET:
+            form = SearchForm(request.GET)
+            if form.is_valid():
+                results = yt_search(form.cleaned_data['channel_name'])
+                context['results'] = results
+            else:
+                context['form'] = form
                 return render(request, 'ourtube/search.html', context, status=400)
-            results = yt_search(request.GET['search_channel'])
-            context['results'] = results
         return render(request, self.template_name, context)
-            
-
-@login_required
-def join_or_create_feed(request):
-    if request.method != 'POST':
-        return redirect('index')
-    elif 'create_feed' in request.POST.keys():
-        form = CreateFeedForm(request.POST)
-        if form.is_valid():
-            current_user = User.objects.get(pk=request.user.id)
-            new_feed = Feed.objects.create(name=form.cleaned_data['name'])
-            Membership.objects.create(
-                user=current_user,
-                feed=new_feed,
-                date_joined = datetime.now(),
-                is_owner=True
-                )
-            return redirect('feed', feed_id=new_feed.id)
-        else:
-            messages.error(request, 'Feed already exists')
-            return redirect('index')
-    elif 'join_feed' in request.POST.keys():
-        form = JoinFeedForm(request.POST)
-        if form.is_valid():
-            current_user = User.objects.get(pk=request.user.id)
-            feed_to_join = Feed.objects.get(pk=form.cleaned_data['feed_number'])
-            try:
-                Membership.objects.create(
-                    user=current_user,
-                    feed=feed_to_join,
-                    date_joined = datetime.now(),
-                    is_owner=False
-                )
-            except:
-                messages.error(request, 'Already a member')
-                return redirect('feed', feed_id=feed_to_join.id)
-        return redirect('feed', feed_id=feed_to_join.id)
-    return redirect('index')
-        
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationFrom
