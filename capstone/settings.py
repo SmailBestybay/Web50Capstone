@@ -143,5 +143,5 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 # Auth views overrides
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = '/ourtube/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'

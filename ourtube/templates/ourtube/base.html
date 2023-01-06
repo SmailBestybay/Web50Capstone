@@ -10,8 +10,8 @@
         {% block sidebar %}
         <div id='nav'>
             <ul>
-                <li><a href="{% url "index" %}">Home</a></li>
-                <li><a href="{% url "search" %}">Search</a></li>
+                <li><a href="{% url "ourtube:index" %}">Home</a></li>
+                <li><a href="{% url "ourtube:search" %}">Search</a></li>
                 <li><a href="{% url "logout" %}">Logout</a></li>
             </ul>
         </div>
@@ -20,7 +20,7 @@
             <ul>
                 {% for feed in feeds  %}
                     <li>
-                        <a href="{% url "feed" feed.id %}">{{ feed.name }}</a>
+                        <a href="{% url "ourtube:feed" feed.id %}">{{ feed.name }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -30,7 +30,7 @@
             <a href="#">Join Feed</a>
         </div>
         <div class="overlay">
-            <form action="{% url 'index' %}" method="post">
+            <form action="{% url 'ourtube:index' %}" method="post">
                 {% csrf_token %}
                 {{ create_form }}
                 <input type="hidden" name="create_feed" value='create_feed'>
@@ -38,7 +38,7 @@
             </form>
         </div>
         <div class="overlay">
-            <form action="{% url 'index' %}" method="post">
+            <form action="{% url 'ourtube:index' %}" method="post">
                 {% csrf_token %}
                 {{ join_form }}
                 <input type="hidden" name="join_feed" value='join_feed'>

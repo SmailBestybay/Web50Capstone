@@ -5,7 +5,7 @@
 {% block content %}
     {{ block.super }}
     <div class="search-form">
-        <form action="{% url "search" %}" method="get">
+        <form action="{% url "ourtube:search" %}" method="get">
             {{ form }}
             <input type="submit" value="Search">
         </form>

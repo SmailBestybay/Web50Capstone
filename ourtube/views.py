@@ -32,7 +32,7 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
                     date_joined = datetime.now(),
                     is_owner=True
                 )
-                return redirect('feed', feed_id=new_feed.id)
+                return redirect('ourtube:feed', feed_id=new_feed.id)
             else:
                 context['create_form'] = form
                 return self.render_to_response(context)
@@ -50,8 +50,8 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
                     )
                 except:
                     messages.error(request, 'Already a member')
-                    return redirect('feed', feed_id=feed_to_join.id)
-                return redirect('feed', feed_id=feed_to_join.id)
+                    return redirect('ourtube:feed', feed_id=feed_to_join.id)
+                return redirect('ourtube:feed', feed_id=feed_to_join.id)
             else:
                 context['join_form'] = form
                 return self.render_to_response(context)
