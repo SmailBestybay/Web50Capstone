@@ -65,6 +65,7 @@ class FeedView(OurtubeTemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_feed = Feed.objects.get(id=self.kwargs['feed_id'])
+        current_feed.owner = current_feed.membership_set.filter(is_owner=True).first().user
         context['current_feed'] = current_feed
         channels = Ytc.objects.filter(feed__id=self.kwargs['feed_id'])
         for channel in channels:
@@ -72,6 +73,14 @@ class FeedView(OurtubeTemplateView):
             channel.videos = get_videos(channel)
         context['channels'] = channels
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if 'channel_id' in request.POST:
+            channel = get_object_or_404(Ytc, pk=request.POST['channel_id'])
+            context['current_feed'].channels.remove(channel)
+            messages.success(request, 'Channel removed')
+        return redirect('ourtube:feed', feed_id=context['current_feed'].id)
 
 class SearchView(OurtubeTemplateView):
 

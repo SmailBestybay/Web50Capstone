@@ -22,7 +22,7 @@
                 </div>
                 <div class="channel_description">{{ result.snippet.description }}</div>
                 <div class="multi_select_dropdown">
-                    <form action="{% url 'search' %}" method="post">
+                    <form action="{% url 'ourtube:search' %}" method="post">
                         {% csrf_token %}
                         {{ feeds_form }}
                         <input type="hidden" name="channel_id" value="{{ result.snippet.channelId }}">

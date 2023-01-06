@@ -7,17 +7,26 @@
     <div class='feed'>
         <h1>{{ current_feed.name }}</h1>
         {% for channel in channels %}
-        <div class="channel">
-            <p>Channel name: {{ channel.name }}</p>
-            <div class="videos">
-                {% for video in channel.videos %}
-                    <div>
-                        {% comment %} need to use embed for iframe {% endcomment %}
-                        <iframe src="https://www.youtube.com/embed/{{video}}" frameborder="0"></iframe>
-                    </div>
-                {% endfor %}
+            <div class="channel">
+                <p>Channel name: {{ channel.name }}</p>
+                <div class="videos">
+                    {% for video in channel.videos %}
+                        <div>
+                            {% comment %} need to use embed for iframe {% endcomment %}
+                            <iframe src="https://www.youtube.com/embed/{{video}}" frameborder="0"></iframe>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="remove">
+                    {% if user == current_feed.owner %}
+                        <form action="{% url 'ourtube:feed' current_feed.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="channel_id" value="{{ channel.id }}">
+                            <input type="submit" value="Remove">
+                        </form>
+                    {% endif %}
+                </div>
             </div>
-        </div>
         {% endfor %}
     </div>
 {% endblock content %}
