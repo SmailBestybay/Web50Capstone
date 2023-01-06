@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, CreateView
 from datetime import datetime
 from .models import YoutubeChannel as Ytc, Feed, User, Membership
 from .forms import *
-from .helper import get_videos, yt_search, get_feeds
+from .helper import *
 
 class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
 
@@ -53,6 +53,7 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
                 except:
                     messages.error(request, 'Already a member')
                     return redirect('feed', feed_id=feed_to_join.id)
+                return redirect('feed', feed_id=feed_to_join.id)
             else:
                 context['join_form'] = form
                 return self.render_to_response(context)
@@ -98,6 +99,31 @@ class SearchView(OurtubeTemplateView):
                 return render(request, 'ourtube/search.html', context, status=400)
 
         return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+
+        context = self.get_context_data(**kwargs)
+        current_user = User.objects.get(pk=request.user.id)
+
+        feeds_form = FeedMultipleChoiceForm(request.POST, user=current_user)
+        if feeds_form.is_valid():
+            channel_id = request.POST['channel_id']
+            channel_title = request.POST['channel_title']
+            playlist_id = get_channel_uploads_id(channel_id)
+            chosen_feeds = feeds_form.cleaned_data['feeds']
+
+            yt_channel, created = Ytc.objects.get_or_create(
+                name=channel_title,
+                channel_id=channel_id,
+                playlist_id=playlist_id
+            )
+
+            for feed in chosen_feeds:
+                feed.channels.add(yt_channel)
+
+            messages.success(request, 'Channels added!')
+            return redirect('index')
+        return self.render_to_response(context)
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationFrom

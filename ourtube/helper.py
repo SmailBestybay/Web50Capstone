@@ -20,6 +20,16 @@ def yt_search(query):
 
     return response['items']
 
+def get_channel_uploads_id(channel_id):
+    '''Get uploads id for the given channel'''
+
+    response = _youtube.channels().list(
+        part='contentDetails',
+        id=channel_id
+    ).execute()
+
+    return response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+
 def get_videos(channel):
     '''Get last 3 videos from playlist.
     Returns an array of youtube video ids
@@ -36,10 +46,6 @@ def get_videos(channel):
     return video_ids
 
 def get_feeds(current_user):
-    """Get the feeds that current user owns or follows. 
-    Additionally, set user object on owner attribute for each feed
-    """
+    """Get the feeds that current user owns or follows."""
     feeds = Feed.objects.all().filter(members__id=current_user.id)
-    for feed in feeds:
-        feed.owner = feed.membership_set.filter(is_owner=True).first().user
     return feeds
