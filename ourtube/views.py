@@ -17,6 +17,7 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
         context["feeds"] = get_feeds(self.request.user)
         context['create_form'] = CreateFeedForm()
         context['join_form'] = JoinFeedForm()
+        context['current_user'] = User.objects.get(pk=self.request.user.id)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -25,10 +26,9 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
         if 'create_feed' in request.POST.keys():
             form = CreateFeedForm(request.POST)
             if form.is_valid():
-                current_user = User.objects.get(pk=request.user.id)
                 new_feed = Feed.objects.create(name=form.cleaned_data['name'])
                 Membership.objects.create(
-                    user=current_user,
+                    user=context['current_user'],
                     feed=new_feed,
                     date_joined = datetime.now(),
                     is_owner=True
@@ -41,11 +41,10 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
         if 'join_feed' in request.POST.keys():
             form = JoinFeedForm(request.POST)
             if form.is_valid():
-                current_user = User.objects.get(pk=request.user.id)
                 feed_to_join = get_object_or_404(Feed, pk=form.cleaned_data['feed_number'])
                 try:
                     Membership.objects.create(
-                        user=current_user,
+                        user=context['current_user'],
                         feed=feed_to_join,
                         date_joined = datetime.now(),
                         is_owner=False
@@ -68,7 +67,6 @@ class FeedView(OurtubeTemplateView):
         context = super().get_context_data(**kwargs)
         current_feed = Feed.objects.get(id=self.kwargs['feed_id'])
         context['current_feed'] = current_feed
-
         channels = Ytc.objects.filter(feed__id=self.kwargs['feed_id'])
         for channel in channels:
             # set attributes dirrectly on objects
@@ -89,38 +87,28 @@ class SearchView(OurtubeTemplateView):
             if form.is_valid():
                 results = yt_search(form.cleaned_data['channel_name'])
                 context['results'] = results
-
-                current_user = User.objects.get(pk=request.user.id)
-                feeds_form = FeedMultipleChoiceForm(user=current_user)
-
+                feeds_form = FeedMultipleChoiceForm(user=context['current_user'])
                 context['feeds_form'] = feeds_form
             else:
                 context['form'] = form
                 return render(request, 'ourtube/search.html', context, status=400)
-
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-
         context = self.get_context_data(**kwargs)
-        current_user = User.objects.get(pk=request.user.id)
-
-        feeds_form = FeedMultipleChoiceForm(request.POST, user=current_user)
+        feeds_form = FeedMultipleChoiceForm(request.POST, user=context['current_user'])
         if feeds_form.is_valid():
             channel_id = request.POST['channel_id']
             channel_title = request.POST['channel_title']
             playlist_id = get_channel_uploads_id(channel_id)
             chosen_feeds = feeds_form.cleaned_data['feeds']
-
             yt_channel, created = Ytc.objects.get_or_create(
                 name=channel_title,
                 channel_id=channel_id,
                 playlist_id=playlist_id
             )
-
             for feed in chosen_feeds:
                 feed.channels.add(yt_channel)
-
             messages.success(request, 'Channels added!')
             return redirect('index')
         return self.render_to_response(context)
