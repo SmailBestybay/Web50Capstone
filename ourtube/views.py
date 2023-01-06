@@ -17,7 +17,6 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
         context["feeds"] = get_feeds(self.request.user)
         context['create_form'] = CreateFeedForm()
         context['join_form'] = JoinFeedForm()
-        context['current_user'] = User.objects.get(pk=self.request.user.id)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -28,7 +27,7 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
             if form.is_valid():
                 new_feed = Feed.objects.create(name=form.cleaned_data['name'])
                 Membership.objects.create(
-                    user=context['current_user'],
+                    user=request.user,
                     feed=new_feed,
                     date_joined = datetime.now(),
                     is_owner=True
@@ -44,7 +43,7 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
                 feed_to_join = get_object_or_404(Feed, pk=form.cleaned_data['feed_number'])
                 try:
                     Membership.objects.create(
-                        user=context['current_user'],
+                        user=request.user,
                         feed=feed_to_join,
                         date_joined = datetime.now(),
                         is_owner=False
@@ -87,7 +86,7 @@ class SearchView(OurtubeTemplateView):
             if form.is_valid():
                 results = yt_search(form.cleaned_data['channel_name'])
                 context['results'] = results
-                feeds_form = FeedMultipleChoiceForm(user=context['current_user'])
+                feeds_form = FeedMultipleChoiceForm(user=request.user)
                 context['feeds_form'] = feeds_form
             else:
                 context['form'] = form
@@ -96,7 +95,7 @@ class SearchView(OurtubeTemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        feeds_form = FeedMultipleChoiceForm(request.POST, user=context['current_user'])
+        feeds_form = FeedMultipleChoiceForm(request.POST, user=request.user)
         if feeds_form.is_valid():
             channel_id = request.POST['channel_id']
             channel_title = request.POST['channel_title']
