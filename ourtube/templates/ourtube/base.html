@@ -10,9 +10,9 @@
           href="https://fonts.googleapis.com/css2?family=Racing+Sans+One">
 </head>
 <body>
+    {% block sidebar %}
     <div class="sidebar" id='sidebar'>
         <h1 class="logo">OURTUBE</h1>
-        {% block sidebar %}
         <div class="nav" id='nav'>
             <ul class="nav__list">
                 <li class="nav__list-item"><a href="{% url "ourtube:index" %}">Home</a></li>
@@ -28,31 +28,36 @@
                         <a href="{% url "ourtube:feed" feed.id %}">{{ feed.name }}</a>
                     </li>
                 {% endfor %}
+                    <li class="feeds__list-item">
+                        <a href="#" class="feeds__add-item">+</a>
+                    </li>
             </ul>
         </div>
-        <div id="add_feed" class="overlay">
-            <a href="#">Create Feed</a>
-            <a href="#">Join Feed</a>
-        </div>
-        <div class="overlay">
-            <form action="{% url 'ourtube:index' %}" method="post">
-                {% csrf_token %}
-                {{ create_form }}
-                <input type="hidden" name="create_feed" value='create_feed'>
-                <input type="submit" value="Create">
-            </form>
-        </div>
-        <div class="overlay">
-            <form action="{% url 'ourtube:index' %}" method="post">
-                {% csrf_token %}
-                {{ join_form }}
-                <input type="hidden" name="join_feed" value='join_feed'>
-                <input type="submit" value="Join">
-                
-            </form>
-        </div> 
-        {% endblock sidebar %}
     </div>
+    <div id="add_feed" class="overlay add_choices">
+        <ul class="add_choices__list">
+            <li class="add_choices__item"><a href="#">Create Feed</a></li>
+            <li class="add_choices__item"><a href="#">Join Feed</a></li>
+        </ul>
+    </div>
+    <div class="overlay create_form">
+        <form action="{% url 'ourtube:index' %}" method="post">
+            {% csrf_token %}
+            {{ create_form }}
+            <input type="hidden" name="create_feed" value='create_feed'>
+            <input type="submit" value="Create">
+        </form>
+    </div>
+    <div class="overlay join_form">
+        <form action="{% url 'ourtube:index' %}" method="post">
+            {% csrf_token %}
+            {{ join_form }}
+            <input type="hidden" name="join_feed" value='join_feed'>
+            <input type="submit" value="Join">
+            
+        </form>
+    </div> 
+    {% endblock sidebar %}
     <div class="content">
         {% block content %}
             {% if messages %}

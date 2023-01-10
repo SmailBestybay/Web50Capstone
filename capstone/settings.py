@@ -139,7 +139,7 @@ API_SERVICE_NAME = "youtube"
 API_VERSION = "v3"
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda r: True,  # false disables the debug toolabar
+    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # false disables the debug toolabar
 }
 
 # Auth views overrides

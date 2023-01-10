@@ -81,7 +81,7 @@ h2 {
   left: 0;
   background-color: var(--clr-light);
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease-out;
 }
 .nav__list-item a:hover::before {
   transform: scaleX(1);
@@ -106,10 +106,14 @@ h2 {
   left: 0;
   background-color: var(--clr-light);
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease-out;
 }
 .feeds__list-item a:hover::before {
   transform: scaleX(1);
+}
+.feeds__add-item {
+  font-family: var(--ff-logo);
+  font-size: 2rem;
 }
 
 .content {
@@ -120,7 +124,52 @@ h2 {
 
 .overlay {
   position: absolute;
-  display: none;
+  background: var(--clr-dark);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.add_choices {
+  transform: translateX(100%);
+}
+.add_choices__list {
+  list-style: none;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.add_choices__list a {
+  position: relative;
+}
+.add_choices__item a::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--clr-light);
+  transform: scaleX(0);
+  transition: transform 0.2s ease-out;
+}
+.add_choices__item a:hover::before {
+  transform: scaleX(1);
+}
+
+.create_form {
+  transform: translateX(100%);
+}
+
+.join_form {
+  transform: translate(100%);
 }
 
 /*# sourceMappingURL=style.css.map */
