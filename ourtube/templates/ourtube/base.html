@@ -2,23 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} OurTube {% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'ourtube/style.css' %}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Racing+Sans+One">
 </head>
 <body>
-    <div id='sidebar'>
+    <div class="sidebar" id='sidebar'>
+        <h1 class="logo">OURTUBE</h1>
         {% block sidebar %}
-        <div id='nav'>
-            <ul>
-                <li><a href="{% url "ourtube:index" %}">Home</a></li>
-                <li><a href="{% url "ourtube:search" %}">Search</a></li>
-                <li><a href="{% url "logout" %}">Logout</a></li>
+        <div class="nav" id='nav'>
+            <ul class="nav__list">
+                <li class="nav__list-item"><a href="{% url "ourtube:index" %}">Home</a></li>
+                <li class="nav__list-item"><a href="{% url "ourtube:search" %}">Search</a></li>
+                <li class="nav__list-item"><a href="{% url "logout" %}">Logout</a></li>
             </ul>
         </div>
-        <div id="feeds">
+        <div class="feeds" id="feeds">
             <h3>Feeds</h3>
-            <ul>
+            <ul class="feeds__list">
                 {% for feed in feeds  %}
-                    <li>
+                    <li class="feeds__list-item">
                         <a href="{% url "ourtube:feed" feed.id %}">{{ feed.name }}</a>
                     </li>
                 {% endfor %}

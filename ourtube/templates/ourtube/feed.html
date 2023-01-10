@@ -5,7 +5,7 @@
 {% block content %}
     {{ block.super }}
     <div class='feed'>
-        <h1>{{ current_feed.name }}</h1>
+        <h2>{{ current_feed.name }}</h2>
         {% for channel in channels %}
             <div class="channel">
                 <p>Channel name: {{ channel.name }}</p>

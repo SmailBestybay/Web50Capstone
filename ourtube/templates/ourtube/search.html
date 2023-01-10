@@ -15,7 +15,7 @@
         {% for result in results %}
             <div class="result" id="{{ result.snippet.channelId }}">
                 <div class="channel_title">
-                    <img src="{{ result.snippet.thumbnails.default.url }}">
+                    <img src="{{ result.snippet.thumbnails.default.url }}" alt="">
                     <a href="https://www.youtube.com/channel/{{ result.snippet.channelId }}">
                         {{ result.snippet.title }}
                     </a>
