@@ -35,7 +35,9 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
                 return redirect('ourtube:feed', feed_id=new_feed.id)
             else:
                 context['create_form'] = form
-                return self.render_to_response(context)
+                # figure out how to bring back to create form overlay on the client side
+                render(request, self.template_name, context, status=409)
+                # return self.render_to_response(context)
 
         if 'join_feed' in request.POST.keys():
             form = JoinFeedForm(request.POST)

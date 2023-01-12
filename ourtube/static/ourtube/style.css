@@ -130,23 +130,29 @@ h2 {
   left: 0;
   right: 0;
   z-index: 100;
+  visibility: hidden;
 }
 
 .add_choices {
-  transform: translateX(100%);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 150ms linear, visibility 0s linear 150ms;
 }
 .add_choices__list {
   list-style: none;
   display: flex;
-  height: 100%;
+  height: 75%;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   margin: 0;
   padding: 0;
 }
 .add_choices__list a {
   position: relative;
+}
+.add_choices__item {
+  margin-bottom: 10px;
 }
 .add_choices__item a::before {
   content: "";
@@ -165,11 +171,21 @@ h2 {
 }
 
 .create_form {
-  transform: translateX(100%);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 150ms linear, visibility 0s linear 150ms;
 }
 
 .join_form {
-  transform: translate(100%);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 150ms linear, visibility 0s linear 150ms;
+}
+
+.add_choices--show, .create_form--show, .join_form--show {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 150ms linear, visibility 0s linear;
 }
 
 /*# sourceMappingURL=style.css.map */

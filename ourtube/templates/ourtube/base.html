@@ -6,8 +6,8 @@
     <title>{% block title %} OurTube {% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'ourtube/style.css' %}">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Racing+Sans+One">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Racing+Sans+One">
+    <script src="{% static 'ourtube/main.js' %}"></script>
 </head>
 <body>
     {% block sidebar %}
@@ -29,18 +29,18 @@
                     </li>
                 {% endfor %}
                     <li class="feeds__list-item">
-                        <a href="#" class="feeds__add-item">+</a>
+                        <a class="feeds__add-item" id="add_feed">+</a>
                     </li>
             </ul>
         </div>
     </div>
-    <div id="add_feed" class="overlay add_choices">
+    <div id="add_choices" class="overlay add_choices">
         <ul class="add_choices__list">
-            <li class="add_choices__item"><a href="#">Create Feed</a></li>
-            <li class="add_choices__item"><a href="#">Join Feed</a></li>
+            <li class="add_choices__item"><a id="create_form_button">Create Feed</a></li>
+            <li class="add_choices__item"><a id="join_form_button">Join Feed</a></li>
         </ul>
     </div>
-    <div class="overlay create_form">
+    <div id="create_form" class="overlay create_form">
         <form action="{% url 'ourtube:index' %}" method="post">
             {% csrf_token %}
             {{ create_form }}
@@ -48,13 +48,12 @@
             <input type="submit" value="Create">
         </form>
     </div>
-    <div class="overlay join_form">
+    <div id="join_form" class="overlay join_form">
         <form action="{% url 'ourtube:index' %}" method="post">
             {% csrf_token %}
             {{ join_form }}
             <input type="hidden" name="join_feed" value='join_feed'>
             <input type="submit" value="Join">
-            
         </form>
     </div> 
     {% endblock sidebar %}
