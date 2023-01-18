@@ -47,6 +47,12 @@ h2 {
   font-family: var(--ff-logo);
 }
 
+header {
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+  font-family: var(--ff-logo);
+}
+
 button {
   padding: 6px 15px;
   color: var(--clr-light);
@@ -106,6 +112,10 @@ button:hover {
 .feeds {
   position: relative;
 }
+.feeds__list {
+  max-height: 300px;
+  overflow: auto;
+}
 .feeds__list-item {
   margin-bottom: 5px;
 }
@@ -136,6 +146,32 @@ button:hover {
   margin-left: var(--sidebar-offset);
   padding: 1px 16px;
   height: 100%;
+}
+
+.channel {
+  border-bottom: 3px dotted var(--clr-dark);
+  padding-bottom: 10px;
+}
+.channel__container {
+  display: flex;
+  column-gap: 10px;
+}
+
+.remove button {
+  position: relative;
+  top: 20px;
+}
+
+.videos {
+  display: flex;
+}
+.videos__item {
+  margin-right: 10px;
+}
+
+.messages {
+  list-style: none;
+  font-family: var(--ff-primary);
 }
 
 /*# sourceMappingURL=style.css.map */

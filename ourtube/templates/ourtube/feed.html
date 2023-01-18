@@ -3,29 +3,33 @@
 {% block title %} {{ current_feed.name }} {% endblock title %}
 
 {% block content %}
-    {{ block.super }}
+    
     <div class='feed'>
-        <h2>{{ current_feed.name }}</h2>
+        <header>{{ current_feed.name }}</header>
+        {{ block.super }}
         {% for channel in channels %}
             <div class="channel">
-                <p>Channel name: {{ channel.name }}</p>
+                <div class="channel__container">
+                    <h2>{{ channel.name }}</h2>
+                    <div class="remove">
+                        {% if user == current_feed.owner %}
+                            <form action="{% url 'ourtube:feed' current_feed.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="channel_id" value="{{ channel.id }}">
+                                <button>Remove</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
                 <div class="videos">
                     {% for video in channel.videos %}
-                        <div>
+                        <div class="videos__item">
                             {% comment %} need to use embed for iframe {% endcomment %}
                             <iframe src="https://www.youtube.com/embed/{{video}}" frameborder="0"></iframe>
                         </div>
                     {% endfor %}
                 </div>
-                <div class="remove">
-                    {% if user == current_feed.owner %}
-                        <form action="{% url 'ourtube:feed' current_feed.id %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="channel_id" value="{{ channel.id }}">
-                            <input type="submit" value="Remove">
-                        </form>
-                    {% endif %}
-                </div>
+                
             </div>
         {% endfor %}
     </div>
