@@ -7,9 +7,18 @@ class CreateFeedForm(forms.ModelForm):
     class Meta:
         model = Feed
         fields = ['name']
+        labels = {
+            'name' : ''
+        }
+        widgets = {
+            'name' : forms.TimeInput(attrs={'placeholder': 'Feed Name'})
+        }
 
 class JoinFeedForm(forms.Form):
-    feed_number = forms.IntegerField()
+    feed_number = forms.IntegerField(
+        label='',
+        widget=forms.NumberInput(attrs={'placeholder': 'Feed Number'})
+        )
 
 class CustomUserCreationFrom(UserCreationForm):
     """ Extends UserCreationForm to work with User """

@@ -10,8 +10,9 @@
     <script src="{% static 'ourtube/main.js' %}"></script>
 </head>
 <body>
-    {% block sidebar %}
+    
     <div class="sidebar" id='sidebar'>
+    {% block sidebar %}
         <h1 class="logo">OURTUBE</h1>
         <div class="nav" id='nav'>
             <ul class="nav__list">
@@ -33,30 +34,27 @@
                     </li>
             </ul>
         </div>
-    </div>
-    <div id="add_choices" class="overlay add_choices">
-        <ul class="add_choices__list">
-            <li class="add_choices__item"><a id="create_form_button">Create Feed</a></li>
-            <li class="add_choices__item"><a id="join_form_button">Join Feed</a></li>
-        </ul>
-    </div>
-    <div id="create_form" class="overlay create_form">
-        <form action="{% url 'ourtube:index' %}" method="post">
-            {% csrf_token %}
-            {{ create_form }}
-            <input type="hidden" name="create_feed" value='create_feed'>
-            <input type="submit" value="Create">
-        </form>
-    </div>
-    <div id="join_form" class="overlay join_form">
-        <form action="{% url 'ourtube:index' %}" method="post">
-            {% csrf_token %}
-            {{ join_form }}
-            <input type="hidden" name="join_feed" value='join_feed'>
-            <input type="submit" value="Join">
-        </form>
-    </div> 
+        <div id="create_form" class="create_form">
+            <h3>Create Feed</h3>
+            <form action="{% url 'ourtube:index' %}" method="post">
+                {% csrf_token %}
+                {{ create_form.as_p }}
+                <input type="hidden" name="create_feed" value='create_feed'>
+                <button>Create</button>
+            </form>
+        </div>
+        <div id="join_form" class="join_form">
+            <h3>Join Feed</h3>
+            <form action="{% url 'ourtube:index' %}" method="post">
+                {% csrf_token %}
+                {{ join_form.as_p }}
+                <input type="hidden" name="join_feed" value='join_feed'>
+                <button>Join</button>
+            </form>
+        </div> 
     {% endblock sidebar %}
+    </div>
+
     <div class="content">
         {% block content %}
             {% if messages %}
