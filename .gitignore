@@ -11,8 +11,3 @@ __pycache__/
 db.sqlite3
 
 config.py
-
-# Sass
-
-*.css.map
-*.scss

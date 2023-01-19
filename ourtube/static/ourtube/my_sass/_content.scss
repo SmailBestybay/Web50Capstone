@@ -1,0 +1,31 @@
+// content
+
+.content {
+    margin-left: var(--sidebar-offset);
+    padding: 1px 16px;
+    height: 100%;
+}
+
+.channel {
+    border-bottom: 3px dotted var(--clr-dark);
+    padding-bottom: 10px;
+    &__container {
+        display: flex;
+        column-gap: 10px;
+    }
+}
+
+.remove {
+    button {
+        position: relative;
+        top: 20px;
+    }
+}
+
+.videos {
+    display: flex;
+
+    &__item {
+        margin-right: 10px;
+    }
+}
