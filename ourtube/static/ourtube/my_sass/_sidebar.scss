@@ -1,4 +1,4 @@
-// sidebar
+@use 'mixins';
 
 .logo {
     letter-spacing: 0.25rem;
@@ -17,23 +17,6 @@
     color: var(--clr-light)
 }
 
-@mixin underline_animation {
-    content: "";
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--clr-light);
-    transform: scaleX(0);
-    transition: transform 0.2s ease-out;
-}
-
-@mixin underline_animation_hover {
-    transform: scaleX(1);
-}
-
 // sidebar nav
 .nav {
     position: relative;
@@ -46,11 +29,11 @@
     }
 
     &__list-item a::before {
-        @include underline_animation;
+        @include mixins.underline_animation;
     }
 
     &__list-item a:hover::before {
-        @include underline_animation_hover;
+        @include mixins.underline_animation_hover;
     }
 }
 
@@ -71,11 +54,11 @@
     }
 
     &__list-item a::before {
-        @include underline_animation;
+        @include mixins.underline_animation;
     }
 
     &__list-item a:hover::before {
-        @include underline_animation_hover;
+        @include mixins.underline_animation_hover;
     }
 
     &__add-item {

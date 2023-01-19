@@ -1,9 +1,30 @@
-// content
+@use 'mixins';
 
 .content {
     margin-left: var(--sidebar-offset);
     padding: 1px 16px;
     height: 100%;
+    
+}
+.search-form {
+    margin: 25px auto;
+}
+.result__title {
+    position: relative;
+
+    a {
+        color: black;
+    }
+
+    a::before {
+        @include mixins.underline_animation;
+        width: 15%;
+        background-color: black;
+    }
+
+    a:hover::before {
+        @include mixins.underline_animation_hover
+    }
 }
 
 .channel {
