@@ -67,6 +67,12 @@ button:hover {
   border-color: var(--clr-dark);
 }
 
+input {
+  font-family: var(--ff-primary);
+  border-radius: 10px;
+  padding: 5px;
+}
+
 .logo {
   letter-spacing: 0.25rem;
 }

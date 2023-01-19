@@ -11,7 +11,7 @@ class CreateFeedForm(forms.ModelForm):
             'name' : ''
         }
         widgets = {
-            'name' : forms.TimeInput(attrs={'placeholder': 'Feed Name'})
+            'name' : forms.TextInput(attrs={'placeholder': 'Feed Name'})
         }
 
 class JoinFeedForm(forms.Form):
@@ -31,7 +31,9 @@ class SearchForm(forms.Form):
         validators=[
             validators.MinLengthValidator(2),
             validators.MaxLengthValidator(128)
-        ]
+        ],
+        label = '',
+        widget=forms.TextInput(attrs={'placeholder': 'Channel Name'})
     )
 
 class FeedMultipleChoiceForm(forms.Form):
