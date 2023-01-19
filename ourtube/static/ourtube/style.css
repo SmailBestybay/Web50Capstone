@@ -69,8 +69,8 @@ button:hover {
 
 input {
   font-family: var(--ff-primary);
-  border-radius: 10px;
   padding: 5px;
+  box-shadow: 0px 0px 6px 1px var(--clr-accent);
 }
 
 .logo {
@@ -176,6 +176,7 @@ input {
   transform: scaleX(0);
   transition: transform 0.2s ease-out;
   width: 15%;
+  transform-origin: top left;
   background-color: black;
 }
 .result__title a:hover::before {

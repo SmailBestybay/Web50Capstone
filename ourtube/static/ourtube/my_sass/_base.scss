@@ -71,6 +71,6 @@ button:hover {
 
 input {
     font-family: var(--ff-primary);
-    border-radius: 10px;
     padding: 5px;
+    box-shadow: 0px 0px 6px 1px var(--clr-accent);
 }

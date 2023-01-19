@@ -19,6 +19,7 @@
     a::before {
         @include mixins.underline_animation;
         width: 15%;
+        transform-origin: top left;
         background-color: black;
     }
 
