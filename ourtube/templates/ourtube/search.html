@@ -1,6 +1,10 @@
 {% extends 'ourtube/base.html' %}
 
 {% block title %} Search {% endblock title %}
+{% block script %}
+    {% load static %}
+    <script src="{% static 'ourtube/searchPage.js' %}"></script>
+{% endblock %}
 
 {% block content %}
     {{ block.super }}

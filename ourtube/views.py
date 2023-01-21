@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
@@ -119,9 +120,9 @@ class SearchView(OurtubeTemplateView):
             )
             for feed in chosen_feeds:
                 feed.channels.add(yt_channel)
-            messages.success(request, 'Channels added!')
-            return redirect('index')
-        return self.render_to_response(context)
+            
+            return JsonResponse({'message':'success!'})
+        return JsonResponse({'message':'form not valid'})
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationFrom

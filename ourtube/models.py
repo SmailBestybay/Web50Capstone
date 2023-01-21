@@ -9,7 +9,7 @@ class User(AbstractUser):
         return self.username
 
 class YoutubeChannel(models.Model): 
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
     channel_id = models.CharField(max_length=128, unique=True)
     playlist_id = models.CharField(max_length=128, unique=True)
 
