@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import JsonResponse
@@ -107,6 +108,7 @@ class SearchView(OurtubeTemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        json_data = json.loads(request.body)
         feeds_form = FeedMultipleChoiceForm(request.POST, user=request.user)
         if feeds_form.is_valid():
             channel_id = request.POST['channel_id']
@@ -122,7 +124,10 @@ class SearchView(OurtubeTemplateView):
                 feed.channels.add(yt_channel)
             
             return JsonResponse({'message':'success!'})
-        return JsonResponse({'message':'form not valid'})
+        return JsonResponse({
+            'message':'form not valid',
+            'myPost':json_data['feeds'],
+        })
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationFrom

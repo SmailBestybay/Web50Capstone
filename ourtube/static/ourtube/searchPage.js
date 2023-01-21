@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
-    // const forms = document.querySelectorAll('.result__dropdown form');
-    // forms.forEach(element => element.addEventListener('submit', handleAddChannels));
+    const forms = document.querySelectorAll('.result__dropdown form');
+    forms.forEach(element => element.addEventListener('submit', handleAddChannels));
 });
 
 function getCookie(name) {
@@ -21,7 +21,10 @@ function getCookie(name) {
 
 async function postFormDataAsJson({url, formData}) {
     const plainFormData = Object.fromEntries(formData.entries());
+    // feels like csrf is not needed in each form because cookie csrf is used instead.
     // delete plainFormData.csrfmiddlewaretoken
+    const feeds = formData.getAll('feeds');
+    plainFormData.feeds = feeds;
     const formDataJsonString = JSON.stringify(plainFormData);
     const csrftoken = getCookie('csrftoken');
     const fetchOptions = {
