@@ -21,8 +21,6 @@ function getCookie(name) {
 
 async function postFormDataAsJson({url, formData}) {
     const plainFormData = Object.fromEntries(formData.entries());
-    // feels like csrf is not needed in each form because cookie csrf is used instead.
-    // delete plainFormData.csrfmiddlewaretoken
     const feeds = formData.getAll('feeds');
     plainFormData.feeds = feeds;
     const formDataJsonString = JSON.stringify(plainFormData);
@@ -31,7 +29,6 @@ async function postFormDataAsJson({url, formData}) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Accept: "application/json",
             'X-CSRFToken': csrftoken,
         },
         mode: 'same-origin',
@@ -48,7 +45,6 @@ async function postFormDataAsJson({url, formData}) {
 
 async function handleAddChannels(event) {
     /**
-     * 
      * @see https://simonplend.com/how-to-use-fetch-to-post-form-data-as-json-to-your-api/
      */
     event.preventDefault();
@@ -58,13 +54,8 @@ async function handleAddChannels(event) {
     try {
         const formData = new FormData(form);
         const resonseData = await postFormDataAsJson({url, formData});
-
         console.log({ resonseData });
     } catch (error) {
         console.error(error);
     }
-
-    // console.log([...formData.entries()]);
-    // console.log([...formData.keys()]);
-    // console.log(formData.getAll('feeds'));
 }; 
