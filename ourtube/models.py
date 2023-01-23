@@ -22,7 +22,7 @@ class Feed(models.Model):
     channels = models.ManyToManyField(YoutubeChannel, blank=True)
 
     def __str__(self) -> str:
-        return f"Feed name: {self.name}, id: {self.id}"
+        return f"{self.name}"
 
 class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

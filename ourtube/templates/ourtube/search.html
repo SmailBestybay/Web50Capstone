@@ -18,13 +18,15 @@
     <div class="results">
         {% for result in results %}
             <div class="result" id="{{ result.snippet.channelId }}">
-                <div class="result__title">
-                    <img src="{{ result.snippet.thumbnails.default.url }}" alt="">
-                    <a href="https://www.youtube.com/channel/{{ result.snippet.channelId }}">
-                        {{ result.snippet.title }}
-                    </a>
+                <div class="result__container">
+                    <div class="result__title">
+                        <img src="{{ result.snippet.thumbnails.default.url }}" alt="">
+                        <a href="https://www.youtube.com/channel/{{ result.snippet.channelId }}">
+                            {{ result.snippet.title }}
+                        </a>
+                    </div>
+                    <div class="result__description">{{ result.snippet.description }}</div>
                 </div>
-                <div class="result__description">{{ result.snippet.description }}</div>
                 <div class="result__dropdown">
                     <form action="{% url 'ourtube:search' %}" method="post">
                         {{ feeds_form }}

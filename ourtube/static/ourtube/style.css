@@ -13,6 +13,7 @@ html {
   --ff-logo: "Racing Sans One", sans-serif;
   --ff-primary: "Roboto", monospace;
   --sidebar-offset: 300px;
+  --box-shadow: 0px 0px 6px 1px #FFC900;
 }
 
 body {
@@ -70,7 +71,7 @@ button:hover {
 input {
   font-family: var(--ff-primary);
   padding: 5px;
-  box-shadow: 0px 0px 6px 1px var(--clr-accent);
+  box-shadow: var(--box-shadow);
 }
 
 .logo {
@@ -158,8 +159,17 @@ input {
   margin: 25px auto;
 }
 
+.result__container {
+  display: flex;
+  width: 300px;
+  margin: 20px 0px;
+}
+.result__container img {
+  margin-bottom: 5px;
+}
 .result__title {
   position: relative;
+  flex: 50%;
 }
 .result__title a {
   color: black;
@@ -181,6 +191,21 @@ input {
 }
 .result__title a:hover::before {
   transform: scaleX(1);
+}
+.result__description {
+  flex: 50%;
+}
+.result__dropdown {
+  width: 50%;
+}
+.result__dropdown select {
+  width: 300px;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 6px 1px #FFC900;
+  padding: 5px 10px;
+}
+.result__dropdown button {
+  display: block;
 }
 
 .channel {

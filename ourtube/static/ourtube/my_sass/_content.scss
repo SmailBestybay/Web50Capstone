@@ -9,22 +9,53 @@
 .search-form {
     margin: 25px auto;
 }
-.result__title {
-    position: relative;
 
-    a {
-        color: black;
+.result {
+    &__container {
+        display: flex;
+        width: 300px;
+        margin: 20px 0px;
+
+        img {
+            margin-bottom: 5px;
+        }
     }
 
-    a::before {
-        @include mixins.underline_animation;
-        width: 15%;
-        transform-origin: top left;
-        background-color: black;
+    &__title {
+        position: relative;
+        flex: 50%;
+
+        a {
+            color: black;
+        }
+    
+        a::before {
+            @include mixins.underline_animation;
+            width: 15%;
+            transform-origin: top left;
+            background-color: black;
+        }
+    
+        a:hover::before {
+            @include mixins.underline_animation_hover
+        }
     }
 
-    a:hover::before {
-        @include mixins.underline_animation_hover
+    &__description {
+        flex: 50%;
+    }
+
+    &__dropdown {
+        width: 50%;
+        select {
+            width: 300px;
+            margin-bottom: 10px;
+            box-shadow: 0px 0px 6px 1px #FFC900;
+            padding: 5px 10px;
+        }
+        button {
+            display: block;
+        }
     }
 }
 

@@ -37,7 +37,10 @@ class SearchForm(forms.Form):
     )
 
 class FeedMultipleChoiceForm(forms.Form):
-    feeds = forms.ModelMultipleChoiceField(queryset=None, label="Choose Feeds")
+    feeds = forms.ModelMultipleChoiceField(
+        queryset=None,
+        label="",
+    )
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
