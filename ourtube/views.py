@@ -109,10 +109,10 @@ class SearchView(OurtubeTemplateView):
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         json_data = json.loads(request.body)
-        feeds_form = FeedMultipleChoiceForm(request.POST, user=request.user)
+        feeds_form = FeedMultipleChoiceForm(json_data, user=request.user)
         if feeds_form.is_valid():
-            channel_id = request.POST['channel_id']
-            channel_title = request.POST['channel_title']
+            channel_id = json_data['channel_id']
+            channel_title = json_data['channel_title']
             playlist_id = get_channel_uploads_id(channel_id)
             chosen_feeds = feeds_form.cleaned_data['feeds']
             yt_channel, created = Ytc.objects.get_or_create(
@@ -126,7 +126,7 @@ class SearchView(OurtubeTemplateView):
             return JsonResponse({'message':'success!'})
         return JsonResponse({
             'message':'form not valid',
-            'myPost':json_data['feeds'],
+            'error': feeds_form.errors,
         })
 
 class SignUpView(CreateView):
