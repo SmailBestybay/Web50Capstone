@@ -1,7 +1,11 @@
 {% extends "ourtube/base.html" %}
+{% block script %}
+<style>body {background-color: var(--clr-dark)}</style>
+{% endblock script %}
 {% block sidebar %}{% endblock sidebar %}
 {% block content %}
     {{ block.super }}
+    <h1 class="logo">OURTUBE</h1>
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}

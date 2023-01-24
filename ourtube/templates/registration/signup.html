@@ -1,6 +1,10 @@
 {% extends 'ourtube/base.html' %}
+{% block script %}
+<style>body {background-color: var(--clr-dark); font-family: var(--ff-primary); color: var(--clr-light);} </style>
+{% endblock script %}
 {% block sidebar %}{% endblock sidebar %}
 {% block content %}
+    <h1 class="logo">OURTUBE</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

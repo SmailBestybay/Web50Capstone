@@ -37,14 +37,14 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
                 return redirect('ourtube:feed', feed_id=new_feed.id)
             else:
                 context['create_form'] = form
-                # figure out how to bring back to create form overlay on the client side
-                render(request, self.template_name, context, status=409)
-                # return self.render_to_response(context)
+                return render(request, self.template_name, context, status=409)
 
         if 'join_feed' in request.POST.keys():
             form = JoinFeedForm(request.POST)
             if form.is_valid():
-                feed_to_join = get_object_or_404(Feed, pk=form.cleaned_data['feed_number'])
+                feed_to_join = get_object_or_404(
+                    Feed, pk=form.cleaned_data['feed_number']
+                )
                 try:
                     Membership.objects.create(
                         user=request.user,
