@@ -123,10 +123,10 @@ class SearchView(OurtubeTemplateView):
             for feed in chosen_feeds:
                 feed.channels.add(yt_channel)
             
-            return JsonResponse({'message':'success!'})
+            return JsonResponse({'message':'Success!'})
         return JsonResponse({
-            'message':'form not valid',
-            'error': feeds_form.errors,
+            'message':'Somthing went wrong',
+            'error': feeds_form.errors
         })
 
 class SignUpView(CreateView):

@@ -55,7 +55,9 @@ async function handleAddChannels(event) {
         const formData = new FormData(form);
         const resonseData = await postFormDataAsJson({url, formData});
         console.log({ resonseData });
+        document.getElementById('add-status-message').innerHTML = resonseData.message;
     } catch (error) {
         console.error(error);
+        document.getElementById('add-status-message').innerHTML = resonseData.message;
     }
 }; 
