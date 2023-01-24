@@ -16,10 +16,16 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["feeds"] = get_feeds(self.request.user)
+        context['feeds'] = get_feeds(self.request.user)
         context['create_form'] = CreateFeedForm()
         context['join_form'] = JoinFeedForm()
         return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if context['feeds'].exists():
+            return redirect('ourtube:feed', feed_id=context['feeds'].first().id)
+        return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -77,6 +83,10 @@ class FeedView(OurtubeTemplateView):
             channel.videos = get_videos(channel)
         context['channels'] = channels
         return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
