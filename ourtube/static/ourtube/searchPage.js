@@ -1,7 +1,6 @@
-window.addEventListener('DOMContentLoaded', () => {
-    const forms = document.querySelectorAll('.result__dropdown form');
-    forms.forEach(element => element.addEventListener('submit', handleAddChannels));
-});
+const forms = document.querySelectorAll('.result__dropdown form');
+forms.forEach(element => element.addEventListener('submit', handleAddChannels));
+
 
 function getCookie(name) {
     let cookieValue = null;
