@@ -94,7 +94,12 @@ class FeedView(OurtubeTemplateView):
             channel = get_object_or_404(Ytc, pk=request.POST['channel_id'])
             context['current_feed'].channels.remove(channel)
             messages.success(request, 'Channel removed')
-        return redirect('ourtube:feed', feed_id=context['current_feed'].id)
+            return redirect('ourtube:feed', feed_id=context['current_feed'].id)
+        
+        if 'feed_id' in request.POST:
+            context['current_feed'].delete()
+            messages.success(request, 'Feed deleted')
+            return redirect('ourtube:index')
 
 class SearchView(OurtubeTemplateView):
 
