@@ -1,6 +1,10 @@
 {% extends 'ourtube/base.html' %}
 
 {% block title %} {{ current_feed.name }} {% endblock title %}
+{% block script %}
+    {% load static %}
+    <script defer src="{% static 'ourtube/feedPage.js' %}"></script>
+{% endblock %}
 
 {% block content %}
     
@@ -19,9 +23,11 @@
                     {% csrf_token %}
                     <input type="hidden" name="unfollow_feed_id" value={{ current_feed.id }}>
                     <button>Unfollow</button>
+                </form>
                 {% endif %}
             </div>
         </div>
+        <div id="add-status-message"></div>
         {{ block.super }}
         {% for channel in channels %}
             <div class="channel">

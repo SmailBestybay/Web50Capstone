@@ -90,11 +90,11 @@ class FeedView(OurtubeTemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if 'channel_id' in request.POST:
-            channel = get_object_or_404(Ytc, pk=request.POST['channel_id'])
+        if 'application/json' == request.content_type:
+            json_data = json.loads(request.body)
+            channel = get_object_or_404(Ytc, pk=json_data['channel_id'])
             context['current_feed'].channels.remove(channel)
-            messages.success(request, 'Channel removed')
-            return redirect('ourtube:feed', feed_id=context['current_feed'].id)
+            return JsonResponse({'message':'Success!'})
         
         if 'delete_feed_id' in request.POST:
             context['current_feed'].delete()

@@ -1,5 +1,5 @@
-const forms = document.querySelectorAll('.result__dropdown form');
-forms.forEach(element => element.addEventListener('submit', handleAddChannels));
+const forms = document.querySelectorAll('.remove form');
+forms.forEach(element => element.addEventListener('submit', handleRemoveChannel));
 
 
 function getCookie(name) {
@@ -20,8 +20,6 @@ function getCookie(name) {
 
 async function postFormDataAsJson({url, formData}) {
     const plainFormData = Object.fromEntries(formData.entries());
-    const feeds = formData.getAll('feeds');
-    plainFormData.feeds = feeds;
     const formDataJsonString = JSON.stringify(plainFormData);
     const csrftoken = getCookie('csrftoken');
     const fetchOptions = {
@@ -42,21 +40,19 @@ async function postFormDataAsJson({url, formData}) {
     return response.json();
 }
 
-async function handleAddChannels(event) {
-    /**
-     * @see https://simonplend.com/how-to-use-fetch-to-post-form-data-as-json-to-your-api/
-     */
+async function handleRemoveChannel(event) {
     event.preventDefault();
-    // this and currentTarget are the same
     const form = event.currentTarget;
     const url = form.action;
+    console.log(form.closest('.channel'));
     try {
         const formData = new FormData(form);
         const responseData = await postFormDataAsJson({url, formData});
-        console.log({ responseData });
+        console.log({responseData});
+        form.closest('.channel').remove();
         document.getElementById('add-status-message').innerHTML = responseData.message;
     } catch (error) {
         console.error(error);
         document.getElementById('add-status-message').innerHTML = responseData.message;
     }
-}; 
+};
