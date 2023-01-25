@@ -1,15 +1,28 @@
 @use 'mixins';
 
 .content {
-    margin-left: var(--sidebar-offset);
     padding: 1px 16px;
-    height: 100%;
-    
+}
+
+@media (min-width: 800px) {
+    .content {
+        margin-left: var(--sidebar-offset);
+    }
 }
 .search-form {
     margin: 25px auto;
 }
+.feed {
+    &__container {
+        display: flex;
+    }
 
+    .delete-feed button {
+        position: relative;
+        top: 0.5rem;
+        left: 0.25rem;
+    }
+}
 .result {
     &__container {
         display: flex;
@@ -75,10 +88,11 @@
     }
 }
 
-.videos {
-    display: flex;
-
-    &__item {
-        margin-right: 10px;
+@media (min-width:1300px) {
+    .videos {
+        display: flex;
+        &__item {
+            margin-right: 10px;
+        }
     }
 }

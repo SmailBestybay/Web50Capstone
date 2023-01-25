@@ -10,11 +10,17 @@
     text-align: center;
     margin: 0;
     padding: 0;
-    width: var(--sidebar-offset);
-    position: fixed;
-    height: 100%;
+    padding-bottom: 1rem;
     overflow: auto;
     color: var(--clr-light)
+}
+
+@media (min-width:800px) {
+    .sidebar {
+        width: var(--sidebar-offset);
+        position: fixed;
+        height: 100%;
+    }
 }
 
 // sidebar nav

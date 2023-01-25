@@ -84,13 +84,18 @@ input {
   text-align: center;
   margin: 0;
   padding: 0;
-  width: var(--sidebar-offset);
-  position: fixed;
-  height: 100%;
+  padding-bottom: 1rem;
   overflow: auto;
   color: var(--clr-light);
 }
 
+@media (min-width: 800px) {
+  .sidebar {
+    width: var(--sidebar-offset);
+    position: fixed;
+    height: 100%;
+  }
+}
 .nav {
   position: relative;
 }
@@ -150,13 +155,25 @@ input {
 }
 
 .content {
-  margin-left: var(--sidebar-offset);
   padding: 1px 16px;
-  height: 100%;
 }
 
+@media (min-width: 800px) {
+  .content {
+    margin-left: var(--sidebar-offset);
+  }
+}
 .search-form {
   margin: 25px auto;
+}
+
+.feed__container {
+  display: flex;
+}
+.feed .delete-feed button {
+  position: relative;
+  top: 0.5rem;
+  left: 0.25rem;
 }
 
 .result__container {
@@ -222,13 +239,14 @@ input {
   top: 20px;
 }
 
-.videos {
-  display: flex;
+@media (min-width: 1300px) {
+  .videos {
+    display: flex;
+  }
+  .videos__item {
+    margin-right: 10px;
+  }
 }
-.videos__item {
-  margin-right: 10px;
-}
-
 .messages {
   list-style: none;
   font-family: var(--ff-primary);

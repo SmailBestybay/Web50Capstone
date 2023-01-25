@@ -5,15 +5,17 @@
 {% block content %}
     
     <div class='feed'>
-        <header>{{ current_feed.name }}</header>
-        <div class="delete-feed">
-            {% if user == current_feed.owner %}
-            <form action="{% url 'ourtube:feed' current_feed.id %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="feed_id" value={{ current_feed.id }}>
-                <button>Delete</button>
-            </form>
-            {% endif %}
+        <div class="feed__container">
+            <header>{{ current_feed.name }}</header>
+            <div class="delete-feed">
+                {% if user == current_feed.owner %}
+                <form action="{% url 'ourtube:feed' current_feed.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="feed_id" value={{ current_feed.id }}>
+                    <button>Delete</button>
+                </form>
+                {% endif %}
+            </div>
         </div>
         {{ block.super }}
         {% for channel in channels %}
