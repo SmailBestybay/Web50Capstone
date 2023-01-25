@@ -96,9 +96,14 @@ class FeedView(OurtubeTemplateView):
             messages.success(request, 'Channel removed')
             return redirect('ourtube:feed', feed_id=context['current_feed'].id)
         
-        if 'feed_id' in request.POST:
+        if 'delete_feed_id' in request.POST:
             context['current_feed'].delete()
             messages.success(request, 'Feed deleted')
+            return redirect('ourtube:index')
+        
+        if 'unfollow_feed_id' in request.POST:
+            context['current_feed'].membership_set.filter(user=request.user).first().delete()
+            messages.success(request, 'Feed unfollowed')
             return redirect('ourtube:index')
 
 class SearchView(OurtubeTemplateView):

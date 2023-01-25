@@ -11,9 +11,14 @@
                 {% if user == current_feed.owner %}
                 <form action="{% url 'ourtube:feed' current_feed.id %}" method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="feed_id" value={{ current_feed.id }}>
+                    <input type="hidden" name="delete_feed_id" value={{ current_feed.id }}>
                     <button>Delete</button>
                 </form>
+                {% else %}
+                <form action="{% url 'ourtube:feed' current_feed.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="unfollow_feed_id" value={{ current_feed.id }}>
+                    <button>Unfollow</button>
                 {% endif %}
             </div>
         </div>
