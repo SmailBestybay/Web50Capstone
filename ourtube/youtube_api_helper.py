@@ -1,6 +1,5 @@
 from googleapiclient.discovery import build
 from django.conf import settings
-from .models import Feed
 
 _youtube = build(
     settings.API_SERVICE_NAME,
@@ -44,8 +43,3 @@ def get_videos(channel):
     for item in response['items']:
         video_ids.append(item['snippet']['resourceId']['videoId'])
     return video_ids
-
-def get_feeds(current_user):
-    """Get the feeds that current user owns or follows."""
-    feeds = Feed.objects.all().filter(members__id=current_user.id)
-    return feeds

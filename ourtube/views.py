@@ -6,9 +6,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from datetime import datetime
-from .models import YoutubeChannel as Ytc, Feed, User, Membership
+from .models import YoutubeChannel as Ytc, Feed, Membership
 from .forms import *
-from .helper import *
+from .youtube_api_helper import *
 
 class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
 
@@ -16,7 +16,7 @@ class OurtubeTemplateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['feeds'] = get_feeds(self.request.user)
+        context['feeds'] = Feed.objects.all().filter(members__id=self.request.user.id)
         context['create_form'] = CreateFeedForm()
         context['join_form'] = JoinFeedForm()
         return context
