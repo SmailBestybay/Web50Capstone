@@ -11,7 +11,10 @@ class CreateFeedForm(forms.ModelForm):
             'name' : ''
         }
         widgets = {
-            'name' : forms.TextInput(attrs={'placeholder': 'Feed Name'})
+            'name' : forms.TextInput(attrs={
+                'placeholder': 'Feed Name',
+                'autocomplete': 'off',
+                })
         }
 
 class JoinFeedForm(forms.Form):
@@ -33,7 +36,10 @@ class SearchForm(forms.Form):
             validators.MaxLengthValidator(128)
         ],
         label = '',
-        widget=forms.TextInput(attrs={'placeholder': 'Channel Name'})
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Channel Name',
+            'autocomplete': 'off',
+            })
     )
 
 class FeedMultipleChoiceForm(forms.Form):
