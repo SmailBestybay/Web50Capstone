@@ -17,6 +17,12 @@ This project helped me become more deeply familiar with Django's "batteries incl
 On the front end:
 - Used BEM naming convention alongside SASS.
 - Built views that can respond to both sync and async post requests. 
+## Screenshots
+Feed Page
+![Feed](Feed.jpg)  
+
+Intro Page
+![Intro](intro.jpg)  
 
 ## Tree structure of files that were created or edited by me.
 
